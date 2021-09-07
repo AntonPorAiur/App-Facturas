@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+    <header th:replace="layout/layout :: header"></header>
+
+    <div class="container py-4">
+        <div class="card bg-light">
+            <div class="card-header" th:text="${titulo}"></div>
+            <div class="card-body">
+
+                <h4 class="card-title">
+                    <a th:href="@{/producto/form}" sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary">Agregar producto</a>
+                </h4>
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th sec:authorize="hasRole('ROLE_ADMIN')">Id</th>
+                            <th>Prodcuto</th>
+                            <th>Precio</th>
+                            <th>Fecha Registro</th>
+                            <th sec:authorize="hasRole('ROLE_ADMIN')">Editar</th>
+                            <th sec:authorize="hasRole('ROLE_ADMIN')">Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="producto: ${productos}">
+                            <td th:text="${producto.id}">
+                            <td th:text="${producto.nombre}"></td>
+                            <td th:text="${#numbers.formatDecimal(producto.precio, 0 , 'COMMA', 2,'POINT')}"></td>
+                            <td th:text="${producto.createAt}"></td>
+                            <td sec:authorize="hasRole('ROLE_ADMIN')">
+                                <a class="btn btn-primary btn-xs" th:href="@{/producto/form/} + ${producto.id}" th:text="'Editar'"></a></td>
+                            <td sec:authorize="hasRole('ROLE_ADMIN')">
+                                <a class="btn btn-danger btn-xs" th:href="@{/producto/eliminar/} + ${producto.id}" th:text="'Eliminar'" onclick="return confirm('Seguro deseas eliminar?')"></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <nav th:replace="paginator-nav :: paginator"></nav>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="layout/layout :: footer"></footer>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+    <header th:replace="layout/layout :: header"></header>
+
+    <div class="container py-4">
+    <div class="card bg-light">
+        <div class="card-header" th:text="${titulo}"></div>
+        <div class="card-body">
+            <!--BOTON DE REGRESO-->
+            <h4 class="card-title"></h4>
+            <a class="btn btn-light btn-xs" th:href="@{'/producto/listarProd'}" th:text="'&laquo; volver'"></a>
+            </h4>
+
+            <form th:action="@{/producto/form}" th:object="${producto}" method="post">
+
+                <div class="form-group row">
+                    <label for="nombre" class="col-sm-2 col-form-label" th:text="'Producto'"></label>
+                    <div class="col-sm-6">
+                        <input type="text" th:field="*{nombre}" class="form-control" th:errorclass="'form-control is-invalid'"/>
+                               <div clas="invalid-feedback" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"/>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="precio" class="col-sm-2 col-form-label" th:text="'Precio'"></label>
+                    <div class="col-sm-6">
+                        <input type="number" min="0" th:field="*{precio}" class="form-control"/>
+                        <div clas="invalid-feedback" th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}"/>
+                    </div>
+                </div>
+                <input type="submit" value="Guardar" class="btn btn-primary"/>
+                <input type="hidden" th:field="*{id}"/>
+            </form>
+        </div>
+    </div>
+
+    <footer th:replace="layout/layout :: footer"></footer>
+
+</body>
+</html>
